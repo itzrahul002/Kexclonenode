@@ -10,7 +10,8 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-  origin: 'http://localhost:5173', 
+  // origin: 'http://localhost:5174', 
+  origin: '*', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -891,7 +892,7 @@ app.post("/api/forgot-password", async (req, res) => {
       httpsAgent,
     });
 
-const resetLink = `${process.env.API_URL_FRONT}/reset-password?token=${resetToken}`;
+    const resetLink = `${process.env.API_URL_FRONT}/reset-password?token=${resetToken}`;
 
     const transporter = nodemailer.createTransport({
       service: "Gmail",
