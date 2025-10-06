@@ -818,8 +818,14 @@ app.post('/api/ad-hoc', async (req, res) => {
     });
 
   } catch (err) {
-    console.error("Error saving  Ad Hoc Service:", err.response?.data || err.message);
-    res.status(500).json({ error: "Failed to save  Ad Hoc Service" });
+    // console.error("Error saving  Ad Hoc Service:", err.response?.data || err.message);
+    console.error("Error saving Ad Hoc Service:", err);
+    res.status(500).json({
+      error: "Failed to save Ad Hoc Service",
+      details: err.message,
+      stack: err.stack,
+    });
+
   }
 });
 
