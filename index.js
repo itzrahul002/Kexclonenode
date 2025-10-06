@@ -5,6 +5,7 @@ require('dotenv').config();
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const https = require('https');
+    import axios from "axios";
 
 const app = express();
 app.use(express.json());
@@ -786,30 +787,18 @@ app.post('/api/ad-hoc', async (req, res) => {
     //   },
     // });
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp-relay.sendinblue.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASSWORD, // App password!
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
 
-    await transporter.sendMail({
-      from: process.env.MAIL_USER,
-      to: process.env.ADMIN_MAIL, 
-      subject: "New Ad Hoc Service Request",
-      html: `
-        <h3>New Service Request</h3>
-        <p><b>Date:</b> ${Date}</p>
-        <p><b>Message:</b> ${Message}</p>
-        <p><b>Client ID:</b> ${PrimaryID}</p>
-      `,
-    });
+await axios.post(
+  "https://api.brevo.com/v3/smtp/email",
+  {
+    sender: { name: "Ad Hoc Service", email: "no-reply@yourdomain.com" },
+    to: [{ email: process.env.ADMIN_MAIL }],
+    subject: "New Ad Hoc Service Request",
+    htmlContent: `<p>Date: ${Date}</p><p>Message: ${Message}</p><p>Client ID: ${PrimaryID}</p>`,
+  },
+  { headers: { "api-key": process.env.BREVO_API_KEY, "Content-Type": "application/json" } }
+);
+
    
     res.json({
       success: true,
