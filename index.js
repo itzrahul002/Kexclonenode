@@ -5,7 +5,6 @@ require('dotenv').config();
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const https = require('https');
-    import axios from "axios";
 
 const app = express();
 app.use(express.json());
