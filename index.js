@@ -775,14 +775,27 @@ app.post('/api/ad-hoc', async (req, res) => {
       }
     });
 
+    // const transporter = nodemailer.createTransport({
+    //   service: "Gmail",
+    //   auth: {
+    //     user: process.env.MAIL_USER,
+    //     pass: process.env.MAIL_PASSWORD,
+    //   },
+    //   tls: {
+    //     rejectUnauthorized: false, 
+    //   },
+    // });
+
     const transporter = nodemailer.createTransport({
-      service: "Gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASSWORD,
+        pass: process.env.MAIL_PASSWORD, // App password!
       },
       tls: {
-        rejectUnauthorized: false, 
+        rejectUnauthorized: false,
       },
     });
 
@@ -797,12 +810,16 @@ app.post('/api/ad-hoc', async (req, res) => {
         <p><b>Client ID:</b> ${PrimaryID}</p>
       `,
     });
-    res.json(response.data.response);
-    res.json({ success: true, message: "Saved and email sent" });
+   
+    res.json({
+      success: true,
+      message: "Record saved and email sent successfully",
+      filemakerResponse: response.data.response,
+    });
 
   } catch (err) {
-    console.error("Error saving delivery note:", err.response?.data || err.message);
-    res.status(500).json({ error: "Failed to save delivery note" });
+    console.error("Error saving  Ad Hoc Service:", err.response?.data || err.message);
+    res.status(500).json({ error: "Failed to save  Ad Hoc Service" });
   }
 });
 
@@ -899,6 +916,9 @@ app.post("/api/forgot-password", async (req, res) => {
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: false, 
       },
     });
 
