@@ -787,7 +787,7 @@ app.post('/api/ad-hoc', async (req, res) => {
     // });
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: "smtp-relay.sendinblue.com",
       port: 587,
       secure: false,
       auth: {
